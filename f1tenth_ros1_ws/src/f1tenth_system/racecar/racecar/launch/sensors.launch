@@ -1,0 +1,21 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+
+  <node name="urg_node" pkg="urg_node" type="urg_node" output="screen"> 
+    <param name="ip_address" value="192.168.0.10"/>
+    <param name="frame_id" value="laser"/>
+    <param name="calibrate_time" value="false"/>
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+  </node>
+  
+  <node pkg="tf" type="static_transform_publisher" name="laser_transform" args="0 0 0 0 0 0 map laser 10"/> 
+  
+  <include file="$(find realsense2_camera)/launch/rs_d435_camera.launch" />
+
+  <!-- static transforms, e.g. base_link to imu -->
+  <!--
+  <include file="$(find racecar)/launch/includes/$(arg racecar_version)/static_transforms.launch.xml" />
+  -->
+
+</launch>

@@ -1,0 +1,6 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find racecar)/rviz/camera_laser.rviz" />
+
+</launch>
