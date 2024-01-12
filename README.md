@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 # Lane Following using Pure Pursuit Controller on F1TENTH Car
 
 Welcome! This is our final project for course ECE484-Principles-Of-Safe-Autonomy in 2023 Fall. The course page can be found [here](https://publish.illinois.edu/robotics-autonomy-resources/f1tenth/).
+=======
+
+[F1TENTH](https://f1tenth.org/).
+>>>>>>> 0c0777d0d5f52d5711a351c24886eee4a5c53309
 
 The project implements a vision-based lane following system. Our aim to make vehicle follow the lane accurately and quickly without collision using Pure Pursuit Controller given RGB images. Our vehicle platform is build on [F1TENTH](https://f1tenth.org/).
 
+<<<<<<< HEAD
 Please check out my [portfolio post](https://jackyyeh5111.github.io/lane-following-using-pure-pursuit-controller-on-f1tenth-car/) or our [final presentation video](https://www.youtube.com/watch?v=mselI6W_V-o) for a greater detailed description.
 
 ## Overview
@@ -82,4 +88,6 @@ My great team members:
 - Huey-Chii Liang
 - Jay Patel
 
-And the support from Professor & TA of ECE484 course.
+And the support from Professor & TA of ECE484 course.S
+=======
+>>>>>>> 0c0777d0d5f52d5711a351c24886eee4a5c53309
