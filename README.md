@@ -1,20 +1,85 @@
-# ECE484-Principles-Of-Safe-Autonomy-2023Fall-Final
+# Lane Following using Pure Pursuit Controller on F1TENTH Car
 
-Our final topic is [F1TENTH](https://f1tenth.org/).
+Welcome! This is our final project for course ECE484-Principles-Of-Safe-Autonomy in 2023 Fall. The course page can be found [here](https://publish.illinois.edu/robotics-autonomy-resources/f1tenth/).
 
-## Resource
-- [porposal slides](https://docs.google.com/presentation/d/17YqnX7Gtl9WG3HiL9azExB3STOYty-JR5yaVbPo2mZ4/edit#slide=id.g291f277322a_0_449)
-- [ECE484 F1/10 documents](https://publish.illinois.edu/robotics-autonomy-resources/f1tenth/)
-- [F1/10 training video part-1](https://www.youtube.com/watch?v=z8FuKutPdyU)
-- [F1/10 training video part-2](https://www.youtube.com/watch?v=UIfg1O4MtmA)
-- [lane_video ros bag](https://uofi.box.com/s/ivq5gv9ffxyqpugf4f5c0p13gmado4pe)
+The project implements a vision-based lane following system. Our aim to make vehicle follow the lane accurately and quickly without collision using Pure Pursuit Controller given RGB images. Our vehicle platform is build on [F1TENTH](https://f1tenth.org/).
 
-## Checkpoints
-| Date  | Tasks |
-|  :---:  | ------------- |
-| Week 1: 10/28 - 11/3  | 1. Install ubuntu20.04 on laptop <br> 2. F1/10 code trace <br> 3. Integrate MP1 & MP2 <br> 4. Run integrated code on recorded ROS bag <br> 5. Apply code on F1 to check real performance <br> |
-| Week 2: 11/4 - 11/11  | 1. Implement PID <br> 2. Implement state estimation <br> 3. Do progress report slides <br> 4. Check camera calibration code <br> 5. Trace MPC code|
-| 11/11  | Progress report  |
-| Week 3: 11/12 - 11/19  | 1. Implement camera calibration <br> 2. Implement MPC w/o obstacles |
-| Week 4: 11/20 - 11/27  | 1. Adjsut MPC w/ obstacles <br> 2. Do final slides  |
-| 11/30  | Final report  |
+Please check out my [portfolio post](https://jackyyeh5111.github.io/lane-following-using-pure-pursuit-controller-on-f1tenth-car/) or our [final presentation video](https://www.youtube.com/watch?v=mselI6W_V-o) for a greater detailed description.
+
+## Overview
+The vehicle is able to follow the lane accurately without collision:
+<figure style="border-style: none">
+<img src="https://github.com/jackyyeh5111/jackyyeh5111.github.io/assets/22386566/7e11faf1-e84e-420c-ac01-fbc8b3902dc0">
+</figure>
+
+Lane detection result:  
+<figure style="border-style: none">
+<img width="200" alt="image" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXltaXNscHg5d2tvemNubWNmZTVzZzJ4MWp2cnUwY242a3NqZG1iYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QL9o5rpbySvFbv40mc/giphy.gif">
+</figure>
+
+## Method
+<img width="936" alt="image" src="https://github.com/jackyyeh5111/jackyyeh5111.github.io/assets/22386566/2c44461c-4c9d-469f-abe3-95bb0d005945">
+
+The project built vision-based lane following system from scratch. Lane detector identifies the lane from the captured frame and provides imaginary waypoints candidates for the controller. Next, the controller selects the best waypoint based on the vehicle state, and sends out next control signal.
+
+The whole system is integrated with ROS. It consists of three primary components:
+1. Camera calibration
+2. Lane detection
+3. Controller
+
+## Quick Starter Guide
+Testing environment: Ubuntu 20.04 LTS
+
+### Installation
+1. Install ROS Noetic ([link](https://wiki.ros.org/noetic/Installation/Ubuntu))
+2. Clone repo
+    ```
+    $ git clone https://github.com/jackyyeh5111/ECE484-Principles-Of-Safe-Autonomy-2023Fall-Final.git lane-follow-project
+    $ cd lane-follow-project
+    ```
+3. Activate virtualenv and install dependencies
+    ```
+    $ pip install -r requirements.txt
+    ```
+
+### Usage
+
+#### online usage
+```python
+$ cd src/
+$ python3 lane_detector.py [params...]
+```
+
+important params:
+- `--perspective_pts`: param for perpective projection. Four number represents respectively for src_leftx, src_rightx, laney, offsety.
+- `--angle_limit`: limit vechicle turing angle.
+- `--vel_min`: min velocity
+- `--vel_max`: max velocity
+- `--look_ahead`: fixed look ahead distance for pure pursuit controller. -1 denotes dynamic lookahead distance, which directly use the most distant waypoint as target point.
+- `--obstacle_tolerate_dist`: car change velocity if obstacle is within this distance.
+
+#### offline usage (for testing)
+For offline, you have to prepare data folder beforehand. Two types of input data format is allowed. One is rosbag, the other option is to put sequential images under the same folder.
+
+- Use rosbag (testing rosbag [download link](https://uofi.box.com/s/ivq5gv9ffxyqpugf4f5c0p13gmado4pe))
+    ```
+    $ python debug_helper.py --use_rosbag [params...] # Run program
+    $ rosbag play <rosbag_path> # Run rosbag
+    ```
+    
+- Sequential images (testing images [download link](https://uofi.box.com/s/82lk65dg8a9vkvc4hn17ffag5car7dva))
+    ```
+    $ python debug_helper.py -i <source dir> [-s <specified_image_id> -n <num_samples>]
+    ```
+
+## Simulation
+Please refer to the folder [controller_simulation](https://github.com/jackyyeh5111/ECE484-Principles-Of-Safe-Autonomy-2023Fall-Final/tree/main/controller_simulation) for simulation.
+![ezgif-7-0647951daf](https://github.com/jackyyeh5111/jackyyeh5111.github.io/assets/22386566/105990e7-43ca-422c-96f3-22af7c10cd99)
+
+## Acknowledgement
+My great team members:
+- Chu-Lin Huang
+- Huey-Chii Liang
+- Jay Patel
+
+And the support from Professor & TA of ECE484 course.
